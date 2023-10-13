@@ -11,8 +11,9 @@ import java.nio.file.*;
 @Service
 public class UserProfileImgService implements FileService {
     @Value("${file.upload-dir}")
-    private String uploadDirectory; // application.properties에서 겨오 설정
+    private String uploadDirectory; // application.properties에서 경로 설정
 
+    /* 파일 저장 및 파일명 반환 */
     @Override
     public String storeFile(MultipartFile file, String userId) {
         try {
@@ -29,6 +30,7 @@ public class UserProfileImgService implements FileService {
         }
     }
 
+    /* 파일을 byte[] 배열 형태로 불러오기 */
     @Override
     public byte[] loadFileAsBytes(String fileName) {
         try {

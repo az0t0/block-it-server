@@ -111,7 +111,7 @@ public class UserController {
             log.info("Firebase GID '" + user.getId() + "'(닉네임: " + user.getName() + ")가 프로필 사진 업로드 성공");
             return ResponseEntity.ok("프로필 사진이 업로드되었습니다.");
         } catch (Exception e) {
-            log.info("Firebase GID '" + userId + "가 프로필 사진 업로드 실패, 예외명: " + e);
+            log.info("Firebase GID '" + userId + "'가 프로필 사진 업로드 실패, 예외명: " + e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 사진 업로드 실패, 예외명: " + e);
         }
     }
@@ -126,10 +126,15 @@ public class UserController {
                 byte[] file = userProfileImgService.loadFileAsBytes(user.getProfileImgPath());
                 return ResponseEntity.ok(file);
             } catch (Exception e) {
-                log.info("Firebase GID '" + userId + "가 프로필 사진 요청 실패, 예외명: " + e);
+                log.info("Firebase GID '" + user.getId() + "'(닉네임: " + user.getName() + "가 프로필 사진 요청 실패, 예외명: " + e);
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         } else {
+            if (user != null) {
+                log.info("Firebase GID '" + user.getId() + "'(닉네임: " + user.getName() + "가 프로필 사진 요청 실패, 파일 존재하지 않음");
+            } else {
+                log.info("프로필 사진 요청 실패, 해당 유저가 존재하지 않음");
+            }
             return ResponseEntity.notFound().build();
         }
     }
